@@ -19,8 +19,13 @@ dependencies {
     testImplementation("org.slf4j:slf4j-api:2.0.18")
 }
 
+//создал таску до доработок таск конфигуратора
+//tasks.test {
+//    useJUnitPlatform{ excludeTags("Assert") }
+//}
+
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform{ excludeTags("Assert") }
 }
 
 tasks.register<Test>("Finish") {
@@ -30,8 +35,6 @@ tasks.register<Test>("Finish") {
 tasks.named("Finish"){
     dependsOn("test")
 }
-
-
 
 val testTaskConfigurator: Test.() -> Unit = {
     testClassesDirs = sourceSets["test"].output.classesDirs
@@ -46,3 +49,8 @@ tasks.register<Test>("testWithTag") {
     useJUnitPlatform { includeTags("Assert") }
     outputs.upToDateWhen { false } // Отключение кэширования для гарантированного запуска
 }
+
+//создал таску до доработок таск конфигуратора
+//tasks.register<Test>("testWithTag") {
+//    useJUnitPlatform { includeTags("Assert") }
+//}

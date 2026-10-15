@@ -15,6 +15,8 @@ dependencies {
     // Source: https://mvnrepository.com/artifact/org.assertj/assertj-core
     testImplementation("org.assertj:assertj-core:3.27.7")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // Source: https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    testImplementation("org.slf4j:slf4j-api:2.0.18")
 }
 
 tasks.test {
@@ -29,3 +31,6 @@ tasks.named("Finish"){
     dependsOn("test")
 }
 
+tasks.register<Test>("testWithTag"){
+    useJUnitPlatform {includeTags("Assert")}
+}

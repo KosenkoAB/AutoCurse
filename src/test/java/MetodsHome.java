@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class MetodsHome {
-    //@Test
+
     //четное, нечетное+
     public static boolean isEven(int n) {
         if (n % 2 == 0){

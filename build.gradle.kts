@@ -31,6 +31,18 @@ tasks.named("Finish"){
     dependsOn("test")
 }
 
-tasks.register<Test>("testWithTag"){
-    useJUnitPlatform {includeTags("Assert")}
+
+
+val testTaskConfigurator: Test.() -> Unit = {
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform()
+}
+
+tasks.test { testTaskConfigurator() }
+
+tasks.register<Test>("testWithTag") {
+    testTaskConfigurator() // Ключевое исправление: настройка путей к тестам
+    useJUnitPlatform { includeTags("Assert") }
+    outputs.upToDateWhen { false } // Отключение кэширования для гарантированного запуска
 }

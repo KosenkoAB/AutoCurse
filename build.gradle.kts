@@ -17,6 +17,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     // Source: https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     testImplementation("org.slf4j:slf4j-api:2.0.18")
+    // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
+    implementation("io.rest-assured:rest-assured:5.5.6")
+    // Source: https://mvnrepository.com/artifact/io.rest-assured/json-path
+    implementation("io.rest-assured:json-path:6.0.1")
 }
 
 //создал таску до доработок таск конфигуратора
@@ -54,3 +58,14 @@ tasks.register<Test>("testWithTag") {
 //tasks.register<Test>("testWithTag") {
 //    useJUnitPlatform { includeTags("Assert") }
 //}
+
+tasks.register<Test>("apiTest"){
+    testTaskConfigurator() // Ключевое исправление: настройка путей к тестам
+    useJUnitPlatform { includeTags("api") }
+    outputs.upToDateWhen { false } // Отключение кэширования для гарантированного запуска
+}
+
+
+
+
+

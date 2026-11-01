@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import static io.restassured.RestAssured.basic;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -16,6 +17,8 @@ public class ApiWork {
     void rest (){
         given()
                 .baseUri("http://localhost:8080")
+                .auth()
+                .basic("admin","secret123")
                 .pathParam("page", 0)
                 .pathParam("size", 10)
                 .get("/goods/list/{page}/{size}")
@@ -36,8 +39,10 @@ public class ApiWork {
     void spec (){
         Response response = (Response) given()
                 .spec(asd)
-                .queryParam("page",0)
-                .queryParam("size", 0)
+                .pathParam("page",0)
+                .pathParam("size", 0)
+                .auth()
+                .basic("admin","secret123")
 //              .basePath("/goods/list/{page}/{size}")
                 .contentType(ContentType.JSON)
                 .get("/goods/list/{page}/{size}")

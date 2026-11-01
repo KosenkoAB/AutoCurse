@@ -18,9 +18,13 @@ dependencies {
     // Source: https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     testImplementation("org.slf4j:slf4j-api:2.0.18")
     // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
-    implementation("io.rest-assured:rest-assured:5.5.6")
+    // ВАЖНО: testImplementation — тогда тесты видят библиотеку, а IDE не подчёркивает .get()
+    // ВАЖНО: одна версия для всех артефактов rest-assured (иначе Groovy-конфликт -> NPE)
+    testImplementation("io.rest-assured:rest-assured:5.5.2")
     // Source: https://mvnrepository.com/artifact/io.rest-assured/json-path
-    implementation("io.rest-assured:json-path:6.0.1")
+    testImplementation("io.rest-assured:json-path:5.5.2")
+    // Для запуска JUnit 5 из IDEA через класс main() (JUnit 4 launcher)
+    testImplementation("org.junit.vintage:junit-vintage-engine")
 }
 
 //создал таску до доработок таск конфигуратора

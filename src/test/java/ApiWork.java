@@ -51,21 +51,4 @@ public class ApiWork {
                 .body("goods",notNullValue());
     }
 
-
-
-
-//    void rest (){
-//        Response response = given()
-//                .spec(asd)
-//                .queryParam("size", 0)
-//                .get("/goods/list")
-//                    .then()
-//                    .log().all()
-//                    .statusCode(200);
-//
-//
-//    }
-
-
-
 }

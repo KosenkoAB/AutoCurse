@@ -20,11 +20,13 @@ dependencies {
     // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
     // ВАЖНО: testImplementation — тогда тесты видят библиотеку, а IDE не подчёркивает .get()
     // ВАЖНО: одна версия для всех артефактов rest-assured (иначе Groovy-конфликт -> NPE)
-    testImplementation("io.rest-assured:rest-assured:6.3.0")
+    testImplementation("io.rest-assured:rest-assured:5.5.2")
     // Source: https://mvnrepository.com/artifact/io.rest-assured/json-path
-    testImplementation("io.rest-assured:json-path:6.3.0")
+    testImplementation("io.rest-assured:json-path:5.5.2")
     // Для запуска JUnit 5 из IDEA через класс main() (JUnit 4 launcher)
     testImplementation("org.junit.vintage:junit-vintage-engine")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
 }
 
 //создал таску до доработок таск конфигуратора

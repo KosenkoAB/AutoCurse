@@ -39,7 +39,7 @@ public class ApiWork {
     void spec (){
         Response response = (Response) given()
                 .spec(asd)
-                .queryParam("page", 0)   // сервер ожидает query-параметры ?page=..&size=..
+                .queryParam("page", 0)
                 .queryParam("size", 10)
                 .auth()
                 .basic("admin","secret123")
@@ -48,6 +48,7 @@ public class ApiWork {
                 .then()
                 .log().all()
                 .statusCode(200)
+//                .extract().response().path("goods");
                 .body("goods",notNullValue());
     }
 

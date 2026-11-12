@@ -27,6 +27,10 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine")
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
+    // Source: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.51.0")
+    // Source: https://mvnrepository.com/artifact/com.codeborne/selenide
+    testImplementation("com.codeborne:selenide:7.19.0")
 }
 
 //создал таску до доработок таск конфигуратора
@@ -71,7 +75,11 @@ tasks.register<Test>("apiTest"){
     outputs.upToDateWhen { false } // Отключение кэширования для гарантированного запуска
 }
 
-
+tasks.register<Test>("sel"){
+    testTaskConfigurator()
+    useJUnitPlatform { includeTags("sel") }
+    outputs.upToDateWhen { false }
+}
 
 
 

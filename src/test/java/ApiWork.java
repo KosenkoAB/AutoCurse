@@ -379,4 +379,18 @@ public class ApiWork {
     }
 
 
+    @Test
+    void del(){
+        given()
+                .spec(asd)
+                .pathParam("id", 50)
+                .when()
+                .delete("/goods/{id}")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+
+
 }

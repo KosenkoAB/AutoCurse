@@ -4,9 +4,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class Solenoid {
+
+    @BeforeAll
+    static void logConfig() {
+        Configurator.logsConfig();
+    }
+
 
     WebDriver driver;
 

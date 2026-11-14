@@ -18,7 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DopTestsSelenid {
 
-
+    @BeforeAll
+    static void logConfig() {
+        Configurator.logsConfig();
+    }
 
     public record Item(String name, Double price) {
     }

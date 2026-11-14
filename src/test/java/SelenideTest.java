@@ -11,7 +11,10 @@ public class SelenideTest {
     SelenideElement password = $x("//*[@placeholder = \"Password\"]");
     SelenideElement signIn = $x("//*[@class = \"primary\"]");
 
-
+    @BeforeAll
+    static void logConfig() {
+        Configurator.logsConfig();
+    }
 
     @BeforeEach
     void init(){

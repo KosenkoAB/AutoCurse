@@ -1,15 +1,17 @@
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.DragAndDropOptions;
 import com.codeborne.selenide.Selenide;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.sleep;
 
 public class DnDTest {
+
+    @BeforeAll
+    static void logConfig() {
+        Configurator.logsConfig();
+    }
 
     @BeforeEach
     void init(){

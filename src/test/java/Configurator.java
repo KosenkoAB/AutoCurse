@@ -13,6 +13,6 @@ public class Configurator {
         log.info("Base URL = {}", CONFIG.baseUrl());
         log.info("Product name = {}",CONFIG.productName());
         log.info("Product price = {}",CONFIG.productPrice());
-
+        log.info("Time out for DnD test = {}ms",CONFIG.timeOut());
     }
 }

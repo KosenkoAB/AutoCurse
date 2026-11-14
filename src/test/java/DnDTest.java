@@ -13,7 +13,7 @@ public class DnDTest {
 
     @BeforeEach
     void init(){
-        Selenide.open("http://localhost:8080");
+        Selenide.open(Configurator.CONFIG.baseUrl());
     }
 
 
@@ -37,9 +37,9 @@ public class DnDTest {
     @Test
     @Tag("DnD")
     void dNd(){
-        sleep(1000);
+        sleep(Configurator.CONFIG.timeOut());
         $x("(//*[@data-name][@draggable])[1]").dragAndDrop(DragAndDropOptions.to($x("//*[@class=\"btn btn-cart\"][@id='open-cart-btn']")));
-        sleep(2000);
+        sleep(Configurator.CONFIG.timeOut());
     }
 
 

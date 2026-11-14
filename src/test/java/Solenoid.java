@@ -13,7 +13,7 @@ public class Solenoid {
     @BeforeEach
     void init(){
         driver = new ChromeDriver();
-        driver.get("http://localhost:8080");
+        driver.get(Configurator.CONFIG.baseUrl());
     }
 
 
@@ -22,12 +22,12 @@ public class Solenoid {
     void addCheck()  {
 
         //То что будем добавлять
-        String par = "Ноутбук";
+        String par = Configurator.CONFIG.productName();
 
         //Авторизовался
         driver.findElement(By.xpath("//*[@class = \"btn-outline\"]")).click();
-        driver.findElement(By.xpath("//*[@placeholder = \"Username\"]")).sendKeys("admin");
-        driver.findElement(By.xpath("//*[@placeholder = \"Password\"]")).sendKeys("secret123");
+        driver.findElement(By.xpath("//*[@placeholder = \"Username\"]")).sendKeys(Configurator.CONFIG.adminLogin());
+        driver.findElement(By.xpath("//*[@placeholder = \"Password\"]")).sendKeys(Configurator.CONFIG.adminPassword());
         driver.findElement(By.xpath("//*[@class = \"primary\"]")).click();
 
                 //Проверил что в админке сижу
@@ -36,7 +36,7 @@ public class Solenoid {
 
         //Добавил товар
         driver.findElement(By.xpath("//*[@id=\"n-name\"][@placeholder=\"Название\"]")).sendKeys(par);
-        driver.findElement(By.xpath("//*[@id=\"n-price\"][@placeholder=\"Цена\"]")).sendKeys("570000");
+        driver.findElement(By.xpath("//*[@id=\"n-price\"][@placeholder=\"Цена\"]")).sendKeys(Configurator.CONFIG.productPrice());
         driver.findElement(By.xpath("//*[@id=\"add-btn\"]")).click();
 
         //Вернулся на список товаров
@@ -45,30 +45,6 @@ public class Solenoid {
         //Проверил что товар добавился
         WebElement mes2 = driver.findElement(By.xpath("//*[@id=\"products-list\"][@class=\"products-grid\"]"));
         assert mes2.getText().contains(par);
-
-//        //вернулся в админку, нашел кнопку последнего добавленного товара и нажал удалить
-//        driver.findElement(By.xpath("//*[@class = \"btn-outline\"]")).click();
-//        driver.findElement(By.xpath("//button[@class='btn btn-del'][last()]")).click();
-//        Alert cardDel = driver.switchTo().alert();
-//        cardDel.accept();
-//
-////        try {
-////            Thread.sleep(10000);
-////        } catch (InterruptedException e) {
-////            e.printStackTrace();
-////        }
-//
-//        //Вернулся на список товаров
-//        driver.findElement(By.xpath("//*[@href=\"/\"]")).click();
-//
-//        //Проверил что товар удален
-//        WebElement mes3 = driver.findElement(By.xpath("//*[@id=\"products-list\"][@class=\"products-grid\"]"));
-//        assertFalse (mes3.getText().contains(par));
-
-
-
-
-
         
     }
 

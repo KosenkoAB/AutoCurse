@@ -6,10 +6,10 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.junit.Assert;
+
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
+
 
 import static com.codeborne.selenide.Selenide.$x;
 import static io.restassured.RestAssured.basic;
@@ -24,15 +24,15 @@ public class DopTestsSelenid {
     }
 
     //Для второго теста переменные цены и наименования
-    String name = "Пиво";
-    Double price = 89.0;
+    String name = Configurator.CONFIG.productName();
+    Double price = Double.valueOf(Configurator.CONFIG.productPrice());
 
     DopTestsSelenid.Item newItem = new DopTestsSelenid.Item(name, price);
 
 
     private RequestSpecification spec = new RequestSpecBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setAuth(basic("admin", "secret123"))
+            .setBaseUri(Configurator.CONFIG.baseUrl())
+            .setAuth(basic(Configurator.CONFIG.adminLogin(), Configurator.CONFIG.adminPassword()))
             .setContentType(ContentType.JSON)
             .log(LogDetail.ALL)
             .build();
@@ -51,7 +51,7 @@ public class DopTestsSelenid {
     @Test
     @Tag("sel")
     void addCart(){
-        Selenide.open("http://localhost:8080");
+        Selenide.open(Configurator.CONFIG.baseUrl());
         $x("(//button[@data-action=\"add-to-cart\"])[1]").click();
         $x("(//button[@data-action=\"add-to-cart\"])[2]").click();
         $x("(//button[@data-action=\"add-to-cart\"])[3]").click();
@@ -74,7 +74,7 @@ public class DopTestsSelenid {
     @Test
     @Tag("sel")
     void checkSumAny (){
-        Selenide.open("http://localhost:8080");
+        Selenide.open(Configurator.CONFIG.baseUrl());
         //Добавил товары
         $x("(//button[@data-action=\"add-to-cart\"])[1]").click();
         $x("(//button[@data-action=\"add-to-cart\"])[2]").click();
@@ -120,12 +120,12 @@ public class DopTestsSelenid {
         //То что будем добавлять
         String par = "Соленоид";
 
-        Selenide.open("http://localhost:8080");
+        Selenide.open(Configurator.CONFIG.baseUrl());
 
         //Авторизация
         $x("//*[@class = \"btn-outline\"]").click();
-        $x("//*[@placeholder = \"Username\"]").sendKeys("admin");
-        $x("//*[@placeholder = \"Password\"]").sendKeys("secret123");
+        $x("//*[@placeholder = \"Username\"]").sendKeys(Configurator.CONFIG.adminLogin());
+        $x("//*[@placeholder = \"Password\"]").sendKeys(Configurator.CONFIG.adminPassword());
         $x("//*[@class = \"primary\"]").click();
 
         //Добавил товар
@@ -163,11 +163,11 @@ public class DopTestsSelenid {
         //То что будем добавлять
         String par = "Соленоид";
 
-        Selenide.open("http://localhost:8080");
+        Selenide.open(Configurator.CONFIG.baseUrl());
         //Авторизовался
         $x("//*[@class = \"btn-outline\"]").click();
-        $x("//*[@placeholder = \"Username\"]").sendKeys("admin");
-        $x("//*[@placeholder = \"Password\"]").sendKeys("secret123");
+        $x("//*[@placeholder = \"Username\"]").sendKeys(Configurator.CONFIG.adminLogin());
+        $x("//*[@placeholder = \"Password\"]").sendKeys(Configurator.CONFIG.adminPassword());
         $x("//*[@class = \"primary\"]").click();
 
         //Добавил товар

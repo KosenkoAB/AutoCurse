@@ -1,12 +1,7 @@
 import com.codeborne.selenide.*;
-import com.codeborne.selenide.conditions.Visible;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class SelenideTest {
@@ -20,7 +15,7 @@ public class SelenideTest {
 
     @BeforeEach
     void init(){
-        Selenide.open("http://localhost:8080");
+        Selenide.open(Configurator.CONFIG.baseUrl());
     }
 
     @Test
@@ -32,8 +27,8 @@ public class SelenideTest {
 
         //Авторизовался
         admin.click();
-        login.sendKeys("admin");
-        password.sendKeys("secret123");
+        login.sendKeys(Configurator.CONFIG.adminLogin());
+        password.sendKeys(Configurator.CONFIG.adminPassword());
         signIn.click();
 
         //Проверка что в админке

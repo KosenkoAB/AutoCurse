@@ -31,6 +31,13 @@ dependencies {
     testImplementation("org.seleniumhq.selenium:selenium-java:4.51.0")
     // Source: https://mvnrepository.com/artifact/com.codeborne/selenide
     testImplementation("com.codeborne:selenide:7.19.0")
+
+    // Source: https://mvnrepository.com/artifact/org.aeonbits.owner/owner
+    testImplementation("org.aeonbits.owner:owner:1.0.12")
+
+    testRuntimeOnly("org.slf4j:slf4j-simple:2.0.18") // Простой вариант
+
+
 }
 
 //создал таску до доработок таск конфигуратора

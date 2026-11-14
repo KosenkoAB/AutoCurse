@@ -75,11 +75,16 @@ tasks.register<Test>("apiTest"){
     outputs.upToDateWhen { false } // Отключение кэширования для гарантированного запуска
 }
 
-tasks.register<Test>("sel"){
+tasks.register<Test>("sel") {
     testTaskConfigurator()
     useJUnitPlatform { includeTags("sel") }
     outputs.upToDateWhen { false }
 }
 
 
+tasks.register<Test>("DnD") {
+    testTaskConfigurator()
+    useJUnitPlatform { includeTags("DnD") }
+    outputs.upToDateWhen { false }
+}
 

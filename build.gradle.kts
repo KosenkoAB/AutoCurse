@@ -76,7 +76,6 @@ tasks.register<Test>("testWithTag") {
     outputs.upToDateWhen { false } // Отключение кэширования для гарантированного запуска
 }
 
-
 tasks.register<Test>("apiTest"){
     testTaskConfigurator() // Ключевое исправление: настройка путей к тестам
     useJUnitPlatform { includeTags("api") }
@@ -88,7 +87,6 @@ tasks.register<Test>("sel") {
     useJUnitPlatform { includeTags("sel") }
     outputs.upToDateWhen { false }
 }
-
 
 tasks.register<Test>("DnD") {
     testTaskConfigurator()

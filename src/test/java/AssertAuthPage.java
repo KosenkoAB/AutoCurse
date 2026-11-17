@@ -24,8 +24,9 @@ public class AssertAuthPage {
 
 
 
-    String expextedTextAdminPanel = "Admin";
+    String expectedTextAdminPanel = "Admin";
     @Test
+    @Tag("Page")
     public void successLoginIn(){
         authPage.clickAdminButton();
         authPage.enterValidLogin();
@@ -37,8 +38,8 @@ public class AssertAuthPage {
                 .isTrue();
 
         assertThat(authPage.checkTextAdminPanel().getText())
-                .as("Текст админ панели не соответствует ожидаемому - "+expextedTextAdminPanel)
-                .contains(expextedTextAdminPanel);
+                .as("Текст админ панели не соответствует ожидаемому - "+ expectedTextAdminPanel)
+                .contains(expectedTextAdminPanel);
 
     }
 
@@ -46,7 +47,7 @@ public class AssertAuthPage {
 
     @Test
     @Tag("Page")
-    public void invalidLoggining(){
+    public void invalidLoginIn(){
         authPage.clickAdminButton();
         authPage.enterInvalidLogin();
         authPage.enterInvalidPassword();

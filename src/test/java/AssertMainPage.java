@@ -26,7 +26,7 @@ public class AssertMainPage {
     String expectedTextMainTitle = "SmartShop";
     String expectedTextInCartFirstItem = "В корзину";
     String expectedTextPlusOneFirstItem = "+";
-    String expPlusOne = $x("(//*[@class=\"qty-input\"])[1]").getValue();
+
 
     private static final Logger log = LoggerFactory.getLogger(AssertMainPage.class);
 
@@ -149,8 +149,12 @@ public class AssertMainPage {
         log.info("Кликаем на плюсик");
         mainPage.clickButtonPlusOneFirstItem();
 
+        String expPlusOne = $x("(//*[@class=\"qty-input\"])[1]").getValue();
+
         assertThat(expPlusOne)
                 .as("ЭТО БАГ!!! проблема известна, приносим извинения за неудобства Уже завел дефект в Сфере")
                 .isEqualTo("2");
+        log.info("Результат успешно");
+
     }
 }

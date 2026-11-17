@@ -21,6 +21,9 @@ public interface ConfigMain extends Config{
     @Config.Key("product.price")
     String productPrice();
 
+    @Config.Key("product.nameEdit")
+    String productNameEdit();
+
     @Config.Key("timeout")
     int timeOut();
 }

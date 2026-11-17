@@ -35,9 +35,9 @@ public class AuthPage {
     String expectedTextButtonSignIn = "Sign in";
     String invalidLogin = "adin";
     String invalidPassword = "secret";
+    String expectedTextWithInvalidCreds = "Неверные учетные данные пользователя";
 
-
-    private final SelenideElement adminButton = $x("//*[@class='btn-outline']");
+   private final SelenideElement adminButton = $x("//*[@class='btn-outline']");
 
     private final SelenideElement login = $x("//*[@placeholder='Username']");
 
@@ -46,6 +46,8 @@ public class AuthPage {
     private final SelenideElement buttonSignIn = $x("//*[@class='primary']");
 
     private final SelenideElement textAdminPanel = $x("//h1[text()=\"SmartShop Admin\"]");
+
+    private final SelenideElement textWithInvalidAuth = $x("//*[@class=\"alert alert-danger\"]");
 
 
     public void clickAdminButton(){
@@ -73,6 +75,14 @@ public class AuthPage {
     }
 
 
+    public void checkVisibLeTextWithInvalidAuth() {
+        textWithInvalidAuth.shouldBe(Condition.visible);
+    }
+
+    public SelenideElement checkTextWithInvalidAuth(){
+         return textWithInvalidAuth.shouldHave(Condition.text(expectedTextWithInvalidCreds));
+    }
+
 
     public SelenideElement checkTextAdminPanel(){
         return textAdminPanel;
@@ -82,10 +92,6 @@ public class AuthPage {
     public boolean checkTextAdminPanelIsVisible (){
         return textAdminPanel.isDisplayed();
     }
-
-//    public void checkTextAdminPanelIsVisible (){
-//        textAdminPanel.shouldBe(Condition.visible);
-//    }
 
 
     public void checkTextAdminButton(){
@@ -118,8 +124,8 @@ public class AuthPage {
 
 
 
-    public void checkTextButtonSignIn(){
-        buttonSignIn.shouldHave(Condition.text(expectedTextButtonSignIn));
+    public SelenideElement checkTextButtonSignIn(){
+        return buttonSignIn.shouldHave(Condition.text(expectedTextButtonSignIn));
     }
 
     public void checkButtonSignInIsVisible(){

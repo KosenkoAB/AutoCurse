@@ -35,15 +35,20 @@ dependencies {
     // Source: https://mvnrepository.com/artifact/org.aeonbits.owner/owner
     testImplementation("org.aeonbits.owner:owner:1.0.12")
 
-    testRuntimeOnly("org.slf4j:slf4j-simple:2.0.18") // Простой вариант
+    testRuntimeOnly("org.slf4j:slf4j-simple:2.0.18")
 
+    implementation("org.seleniumhq.selenium:selenium-java:4.51.0")
 
+    implementation("com.codeborne:selenide:7.19.0")
+
+    // Source: https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly("org.projectlombok:lombok:1.18.46")
+
+    implementation("org.aeonbits.owner:owner:1.0.12")
+
+    implementation("org.assertj:assertj-core:3.27.7")
 }
 
-//создал таску до доработок таск конфигуратора
-//tasks.test {
-//    useJUnitPlatform{ excludeTags("Assert") }
-//}
 
 tasks.test {
     useJUnitPlatform{ excludeTags("Assert") }
@@ -71,10 +76,6 @@ tasks.register<Test>("testWithTag") {
     outputs.upToDateWhen { false } // Отключение кэширования для гарантированного запуска
 }
 
-//создал таску до доработок таск конфигуратора
-//tasks.register<Test>("testWithTag") {
-//    useJUnitPlatform { includeTags("Assert") }
-//}
 
 tasks.register<Test>("apiTest"){
     testTaskConfigurator() // Ключевое исправление: настройка путей к тестам
@@ -95,3 +96,8 @@ tasks.register<Test>("DnD") {
     outputs.upToDateWhen { false }
 }
 
+tasks.register<Test>("Page") {
+    testTaskConfigurator()
+    useJUnitPlatform { includeTags("Page") }
+    outputs.upToDateWhen { false }
+}

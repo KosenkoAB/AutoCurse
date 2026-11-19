@@ -1,6 +1,8 @@
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import groovy.util.logging.Slf4j;
 import io.qameta.allure.Step;
+import io.qameta.allure.selenide.AllureSelenide;
 import object.AuthPage;
 import object.ConfiguratorMain;
 import object.PageForFourTest;
@@ -9,9 +11,9 @@ import org.openqa.selenium.Alert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.codeborne.selenide.Selenide.$x;
+
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.assertj.core.api.Assertions.assertThat;
+
 
 
 
@@ -24,14 +26,14 @@ public class ChecksForFourTest {
 
 
 
-//    @BeforeAll
-//    void initAllureSelenide(){
-//        SelenideLogger.addListener("AllureSelenide",
-//                new AllureSelenide()
-//                        .screenshots(true)
-//                        .savePageSource(true)
-//        );
-//    }
+    @BeforeAll
+    public static void initAllureSelenide(){
+        SelenideLogger.addListener("AllureSelenide",
+                new AllureSelenide()
+                        .screenshots(true)
+                        .savePageSource(true)
+        );
+    }
 
     @Step("Открытие Браузера и открытие главной страницы")
     @BeforeEach

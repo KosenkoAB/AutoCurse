@@ -22,7 +22,7 @@ public class ChecksAuthPage {
     private static final Logger log = LoggerFactory.getLogger(ChecksAuthPage.class);
 
     @BeforeAll
-    void initAllureSelenide(){
+    public static void initAllureSelenide(){
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide()
                         .screenshots(true)

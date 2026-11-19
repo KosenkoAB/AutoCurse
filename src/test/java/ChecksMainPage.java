@@ -24,7 +24,7 @@ public class ChecksMainPage {
 
 
     @BeforeAll
-    void initAllureSelenide(){
+    public static void initAllureSelenide(){
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide()
                         .screenshots(true)

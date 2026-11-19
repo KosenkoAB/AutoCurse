@@ -100,10 +100,14 @@ public class AssertMainPage {
                 .isEqualTo("2");
     }
 
-    @Step("")
+    @Step("Проверка перехода в корзину")
     public void checkGoInsideCart(){
         $x("//h2[text()=\""+expInsideCart+"\"]").shouldBe(Condition.visible);
     }
 
 
+    @Step("Проверка перехода на форму авторизации")
+    public void checkGoInAuthorization(){
+        $x("//button[@type=\"submit\"]").shouldBe(Condition.visible);
+    }
 }

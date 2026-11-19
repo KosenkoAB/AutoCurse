@@ -56,7 +56,7 @@ public class ChecksMainPage {
         mainPage.clickAdminButton();
 
         log.info("Проверка перехода на форму авторизации");
-        $x("//button[@type=\"submit\"]").shouldBe(Condition.visible);
+        assertMainPage.checkGoInAuthorization();
         log.info("Результат - УСПЕШНО");
     }
 

@@ -12,41 +12,41 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    // Source: https://mvnrepository.com/artifact/org.assertj/assertj-core
     testImplementation("org.assertj:assertj-core:3.27.7")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    // Source: https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+
     testImplementation("org.slf4j:slf4j-api:2.0.18")
-    // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
-    // ВАЖНО: testImplementation — тогда тесты видят библиотеку, а IDE не подчёркивает .get()
-    // ВАЖНО: одна версия для всех артефактов rest-assured (иначе Groovy-конфликт -> NPE)
     testImplementation("io.rest-assured:rest-assured:5.5.2")
-    // Source: https://mvnrepository.com/artifact/io.rest-assured/json-path
     testImplementation("io.rest-assured:json-path:5.5.2")
-    // Для запуска JUnit 5 из IDEA через класс main() (JUnit 4 launcher)
     testImplementation("org.junit.vintage:junit-vintage-engine")
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
-    // Source: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     testImplementation("org.seleniumhq.selenium:selenium-java:4.51.0")
-    // Source: https://mvnrepository.com/artifact/com.codeborne/selenide
     testImplementation("com.codeborne:selenide:7.19.0")
-
-    // Source: https://mvnrepository.com/artifact/org.aeonbits.owner/owner
     testImplementation("org.aeonbits.owner:owner:1.0.12")
 
     testRuntimeOnly("org.slf4j:slf4j-simple:2.0.18")
 
     implementation("org.seleniumhq.selenium:selenium-java:4.51.0")
-
     implementation("com.codeborne:selenide:7.19.0")
 
-    // Source: https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.46")
 
     implementation("org.aeonbits.owner:owner:1.0.12")
-
     implementation("org.assertj:assertj-core:3.27.7")
+
+    implementation("io.qameta.allure:allure-selenide:3.1.1")
+    implementation("io.qameta.allure:allure-rest-assured:3.1.1")
+    testImplementation("io.qameta.allure:allure-junit5:2.35.5")
+    implementation("io.qameta.allure:allure-java-commons:3.1.1")
+    runtimeOnly("io.qameta.allure:allure-test-filter:2.35.6")
+    testImplementation("io.qameta.allure:allure-selenide:3.1.1")
+    testImplementation("io.qameta.allure:allure-rest-assured:3.1.1")
+    implementation("io.qameta.allure:allure-junit5:2.35.5")
+
+    implementation(platform("org.junit:junit-bom:6.0.0"))
+    implementation("org.junit.jupiter:junit-jupiter")
 }
 
 

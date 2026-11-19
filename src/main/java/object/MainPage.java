@@ -1,12 +1,11 @@
 package object;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$x;
 
 public class MainPage {
-    String expectedTextPlusOneFirstItem = "+";
 
     private final SelenideElement adminButton = $x("//*[@class='btn-outline']");
     private final SelenideElement buttonInCart = $x("//*[@class=\"btn btn-cart\"]");
@@ -15,11 +14,12 @@ public class MainPage {
     private final SelenideElement buttonPlusOneFirstItem = $x("(//button[@data-step=\"1\"])[1]");
 
 
-
+    @Step("Клик на кнопку Администрирование")
     public void clickAdminButton(){
         adminButton.click();
     }
 
+    @Step("Проверка отображения кнопки Администрирование")
     public boolean adminButtonIsVisible(){
         return adminButton.isDisplayed();
     }
@@ -29,11 +29,12 @@ public class MainPage {
     }
 
 
-
+    @Step("Клик на кнопку в корзину")
     public void clickButtonInCart(){
         buttonInCart.click();
     }
 
+    @Step("Проверка отображения кнопки в корзину")
     public boolean buttonInCartIsVisible(){
         return buttonInCart.isDisplayed();
     }
@@ -44,6 +45,7 @@ public class MainPage {
 
 
 
+    @Step("Проверка отображения текста на главной странице")
     public boolean textMainTitleIsVisible(){
         return textMainTitle.isDisplayed();
     }
@@ -53,12 +55,13 @@ public class MainPage {
     }
 
 
-
+    @Step("Клик на кнопку добавить в корзину первый товар в списке")
     public void clickButtonInCartFirstItem(){
         buttonInCartFirstItem.click();
     }
 
-    public boolean textButtonInCartFirstItem(){
+    @Step("Проверка отображения текста кнопки в корзину у первого товара")
+    public boolean buttonInCartFirstItemIsVisible(){
         return buttonInCartFirstItem.isDisplayed();
     }
 
@@ -67,11 +70,12 @@ public class MainPage {
     }
 
 
-
+    @Step("Клик на кнопку первую в списке плюс один товар")
     public void clickButtonPlusOneFirstItem(){
         buttonPlusOneFirstItem.click();
     }
 
+    @Step("Проверка отображения текста кнопки + у первого товара")
     public boolean textButtonPlusOneFirstItemIsVilible(){
         return buttonPlusOneFirstItem.isDisplayed();
     }

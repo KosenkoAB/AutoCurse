@@ -1,28 +1,36 @@
 
 import com.codeborne.selenide.Selenide;
 
+import com.codeborne.selenide.logevents.SelenideLogger;
 import groovy.util.logging.Slf4j;
+import io.qameta.allure.selenide.AllureSelenide;
 import object.AuthPage;
 import object.ConfiguratorMain;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.assertj.core.api.Assertions.assertThat;
+
 
 
 
 
 @Slf4j
-public class AssertAuthPage {
+public class ChecksAuthPage {
 
-    private static final Logger log = LoggerFactory.getLogger(AssertAuthPage.class);
+    private static final Logger log = LoggerFactory.getLogger(ChecksAuthPage.class);
 
+    @BeforeAll
+    void initAllureSelenide(){
+        SelenideLogger.addListener("AllureSelenide",
+                new AllureSelenide()
+                        .screenshots(true)
+                        .savePageSource(true)
+        );
+    }
+
+    @DisplayName("Запуск браузера")
     @BeforeEach
     void init(){
         Selenide.open(ConfiguratorMain.config.baseUrl());
@@ -30,11 +38,11 @@ public class AssertAuthPage {
 
 
     AuthPage authPage = new AuthPage();
+    AssertsBasic.AssertAuthPage assertAuthPage = new AssertsBasic.AssertAuthPage();
 
 
 
-
-    String expectedTextAdminPanel = "Admin";
+    @DisplayName("Тест-кейс успешная авторизация")
     @Test
     @Tag("Page")
     public void successLoginIn(){
@@ -49,18 +57,14 @@ public class AssertAuthPage {
 
         sleep(1000);
 
-        assertThat(authPage.checkTextAdminPanelIsVisible())
-                .as("Текст админ панели не виден")
-                .isTrue();
+        assertAuthPage.checkVisibleTextAdminPanel();
 
-        assertThat(authPage.checkTextAdminPanel().getText())
-                .as("Текст админ панели не соответствует ожидаемому - "+ expectedTextAdminPanel)
-                .contains(expectedTextAdminPanel);
+        assertAuthPage.checkValidationTextAdminPanel();
         log.info("Авторизация успешна");
     }
 
 
-
+    @DisplayName("Тест-кейс НЕ успешная авторизация")
     @Test
     @Tag("Page")
     public void invalidLoginIn(){
@@ -80,7 +84,7 @@ public class AssertAuthPage {
 
 
 
-
+    @DisplayName("Тест-кейс проверка видимости элементов на форме авторизации")
     @Test
     @Tag("Page")
     public void checkVisibleElements(){
@@ -94,6 +98,7 @@ public class AssertAuthPage {
         log.info("Все элементы видны");
     }
 
+    @DisplayName("Тест-кейс Проверка текста внутри не заполненных полей логин, пароль")
     @Test
     @Tag("Page")
     public void checkFieldText(){
@@ -105,7 +110,7 @@ public class AssertAuthPage {
     }
 
 
-
+    @DisplayName("Закрытие браузера")
     @AfterEach
     void out(){
         Selenide.closeWebDriver();

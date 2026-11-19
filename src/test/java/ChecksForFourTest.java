@@ -1,14 +1,10 @@
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
 import groovy.util.logging.Slf4j;
+import io.qameta.allure.Step;
 import object.AuthPage;
 import object.ConfiguratorMain;
 import object.PageForFourTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.Alert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,36 +16,41 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Slf4j
-public class AssertForFourTest {
+public class ChecksForFourTest {
 
-    private static final Logger log = LoggerFactory.getLogger(AssertForFourTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ChecksForFourTest.class);
 
-
-    String expTextTitleOrder = "Заказ успешно оформлен!";
-    String expTextTostOrder = "Заказ принят в обработку!";
-    String expTextTostAddItem = "Товар успешно добавлен!";
-    String expTextTostSaveChanges = "обновлен";
+    AssertsBasic.AssertForFourTest assertForFourTest = new AssertsBasic.AssertForFourTest();
 
 
 
+//    @BeforeAll
+//    void initAllureSelenide(){
+//        SelenideLogger.addListener("AllureSelenide",
+//                new AllureSelenide()
+//                        .screenshots(true)
+//                        .savePageSource(true)
+//        );
+//    }
 
-
+    @Step("Открытие Браузера и открытие главной страницы")
     @BeforeEach
     void init(){
         Selenide.open(ConfiguratorMain.config.baseUrl());
     }
 
+    @Step("Закрытие Браузера ")
     @AfterEach
     void out(){
         Selenide.closeWebDriver();
     }
 
     PageForFourTest pageForFourTest = new PageForFourTest();
-    AssertAuthPage assertAuthPage = new AssertAuthPage();
+    ChecksAuthPage assertAuthPage = new ChecksAuthPage();
     AuthPage authPage = new AuthPage();
 
 
-
+    @DisplayName("Тест-кейс оформление заказа тремя товарами")
     @Test
     @Tag("Page")
     void addCart(){
@@ -71,31 +72,26 @@ public class AssertForFourTest {
 
         log.info("Проверяем элементы после нажатия оформить");
         //Проверка оформления
-        log.info("Проверка видимости главного текста - "+expTextTitleOrder);
-        assertThat(pageForFourTest.isVisibleTextTitleMainOrder())
-                .as("Текст уведомления на главной странице не виден")
-                .isTrue();
+        log.info("Проверка видимости главного текста");
+        assertForFourTest.checkIsVisibleTextTitleMainOrder();
+
+        assertForFourTest.checkTextMainTitle();
+
 
         log.info("Проверка видимости тоста после оформления");
-        assertThat(pageForFourTest.tostOrderIsVisible())
-                .as("Тест тоста отсутсвует или сам тост не видел")
-                .isTrue();
+        assertForFourTest.checkTostOrderIsVisible();
 
         log.info("Проверка текста Главной страницы");
-        assertThat(pageForFourTest.getTextTitleMainOrder())
-                .as("Текст не соотвествует ожидаемому - "+expTextTitleOrder+" или сам элемент отсутствует")
-                .contains(expTextTitleOrder);
+        assertForFourTest.checkTextTitleMainOrder();
 
         log.info("Проверка текста тоста");
-        assertThat(pageForFourTest.getTextTostOrder())
-                .as("Текст не соотвествует ожидаемому - "+expTextTostOrder+" или сам элемент отсутствует")
-                .contains(expTextTostOrder);
+        assertForFourTest.checkTextTostOrder();
 
         log.info("РЕЗУЛЬТАТ ТЕСТА --- УСПЕШНО");
     }
 
 
-
+    @DisplayName("Тест-кейс проверка суммы чисел товаров на странице с суммой товаров в корзине")
     @Test
     @Tag("Page")
     public void checkSumAny(){
@@ -107,39 +103,23 @@ public class AssertForFourTest {
         log.info("3 товара добавлены");
 
         log.info("Проверка отображения сумм трех товаров");
-        assertThat(pageForFourTest.summFirstItemIsVisible())
-                .as("Сумма первого товара не видна")
-                .isTrue();
-
-        assertThat(pageForFourTest.summSecondItemIsVisible())
-                .as("Сумма второго товара не видна")
-                .isTrue();
-
-        assertThat(pageForFourTest.summThirdItemIsVisible())
-                .as("Сумма третьего товара не видна")
-                .isTrue();
-
-
-        int resolution = pageForFourTest.getCountFirstItem() + pageForFourTest.getCountSecondItem() + pageForFourTest.getCountThirdItem();
-        log.info("Посчитали сумму трех товаров = "+resolution);
+        assertForFourTest.checkSummFirstItemIsVisible();
+        assertForFourTest.checkSummSecondItemIsVisible();
+        assertForFourTest.checkSummThirdItemIsVisible();
 
         log.info("Перешли в корзину");
         pageForFourTest.clickButtonInCart();
 
         log.info("Проверили что итоговая сумма видна");
-        assertThat(pageForFourTest.summAllItemIsVisible())
-                .as("Сумма всех товаров отсуствует")
-                .isTrue();
-
+        assertForFourTest.checkSummAllItemIsVisible();
 
         log.info("Проверка суммы товаров из гл.страницы равна сумме в корзине");
-        assertThat(resolution)
-                .as("Сумма товаров должна быть равно сумме в корзине")
-                .isEqualTo(pageForFourTest.getCountAllItem());
+        assertForFourTest.checkCountSum();
         log.info("РЕЗУЛЬТАТ ТЕСТА --- УСПЕШНО");
 
     }
 
+    @DisplayName("Тест-кейс добавление товара через админку")
     @Test
     @Tag("Page")
     void addItem(){
@@ -150,17 +130,11 @@ public class AssertForFourTest {
         log.info("Авторизация прошла успешно");
 
         log.info("Выполняются проверки по наличию полей ввода товара и кнопки добавить");
-        assertThat(pageForFourTest.fieldNameItemIsVisible())
-                .as("Поле ввода наименования товара отсутствует")
-                .isTrue();
+        assertForFourTest.checkFieldNameItemIsVisible();
 
-        assertThat(pageForFourTest.fieldPriceItemIsVisible())
-                .as("Поле ввода цены товара отсутствует")
-                .isTrue();
+        assertForFourTest.checkFieldPriceItemIsVisible();
 
-        assertThat(pageForFourTest.buttonAddItemIsVisible())
-                .as("Кнопка добавить товар отсуствует")
-                .isTrue();
+        assertForFourTest.checkButtonAddItemIsVisible();
         log.info("Все элементы присутствуют");
 
         log.info("Добавляем новый товар");
@@ -170,32 +144,23 @@ public class AssertForFourTest {
 
         log.info("Выполяются проверки по тосту и кнопке удалить");
         sleep(1500);
-        assertThat(pageForFourTest.tostAddItemIsVisible())
-                .as("Тост о добавлении нового товара отсутствует")
-                .isTrue();
+        assertForFourTest.checkTostAddItemIsVisible();
 
         sleep(1500);
-        assertThat(pageForFourTest.getTextTostAddItem())
-                .as("Тест в тосте не соответствует ожидаемому")
-                .contains(expTextTostAddItem);
+        assertForFourTest.checkTextTostAddItem();
 
         sleep(1500);
-        assertThat(pageForFourTest.buttonDeleteLastItemIsVisible())
-                .as("Кнопка удалить последний товар отсутствует")
-                .isTrue();
+        assertForFourTest.checkButtonDeleteLastItemIsVisible();
 
         log.info("Кликаем на удалить последний товар");
         pageForFourTest.clickButtonDeleteLastItem();
 
         //Подтвердил алерт
-        Alert cardDel = Selenide.switchTo().alert();
-        cardDel.accept();
+        assertForFourTest.skipAlert();
         log.info("Подтвердил алерт при удалении");
 
         log.info("Проверка наличия Гиппер-ссылки вернуться на главную страницу");
-        assertThat(pageForFourTest.buttonBackToMainPageIsVisible())
-                .as("Гиппер-ссылка вернуться на главную страницу отсутствует")
-                .isTrue();
+        assertForFourTest.checkButtonBackToMainPageIsVisible();
         log.info("Гиппер-ссылка присутствует");
 
         log.info("Кликаем на гипер-ссылку");
@@ -203,12 +168,11 @@ public class AssertForFourTest {
 
         log.info("Проверка отсутствия товара");
         //Проверил что его нет
-        SelenideElement list2 = $x("//div/div/h4[text()='"+ConfiguratorMain.config.productName()+"']");
-        list2.shouldNotBe(Condition.visible);
+        assertForFourTest.itemNotVisible();
         log.info("РЕЗУЛЬТАТ ТЕСТА --- УСПЕШНО");
     }
 
-
+    @DisplayName("Тест-кейс редактирование ранее добавленного товара в админке")
     @Test
     @Tag("Page")
     void editItem(){
@@ -218,17 +182,9 @@ public class AssertForFourTest {
         assertAuthPage.successLoginIn();
 
         log.info("Выполняются проверки по наличию полей ввода товара и кнопки добавить");
-        assertThat(pageForFourTest.fieldNameItemIsVisible())
-                .as("Поле ввода наименования товара отсутствует")
-                .isTrue();
-
-        assertThat(pageForFourTest.fieldPriceItemIsVisible())
-                .as("Поле ввода цены товара отсутствует")
-                .isTrue();
-
-        assertThat(pageForFourTest.buttonAddItemIsVisible())
-                .as("Кнопка добавить товар отсуствует")
-                .isTrue();
+        assertForFourTest.checkFieldNameItemIsVisible();
+        assertForFourTest.checkFieldPriceItemIsVisible();
+        assertForFourTest.checkButtonAddItemIsVisible();
         log.info("Поля присутствуют и кнопка тоже");
 
         log.info("Добавляем новый товар");
@@ -238,20 +194,13 @@ public class AssertForFourTest {
 
         log.info("Выполяются проверки по тосту и кнопке удалить");
         sleep(1500);
-        assertThat(pageForFourTest.tostAddItemIsVisible())
-                .as("Тост о добавлении нового товара отсутствует")
-                .isTrue();
+        assertForFourTest.checkTostAddItemIsVisible();
 
         sleep(1500);
-        assertThat(pageForFourTest.getTextTostAddItem())
-                .as("Тест в тосте не соответствует ожидаемому")
-                .contains(expTextTostAddItem);
-
+        assertForFourTest.checkTextTostAddItem();
 
         sleep(1500);
-        assertThat(pageForFourTest.fieldNameItemLastIsVisible())
-                .as("Поле Наименование последнего товара отсутствует")
-                .isTrue();
+        assertForFourTest.checkFieldNameItemLastIsVisible();
         log.info("Проверки выполнены");
 
         log.info("Чистим поле наименование");
@@ -260,35 +209,23 @@ public class AssertForFourTest {
         pageForFourTest.editFieldNameItemLast();
 
         log.info("Проверка кнопки сохранить");
-        assertThat(pageForFourTest.buttonSaveChangeIsVisible())
-                .as("Кнопка Сохранить на последнем товаре отсутствует")
-                .isTrue();
+        assertForFourTest.checkButtonSaveChangeIsVisible();
 
         log.info("Кликаем на сохранить");
         pageForFourTest.clickButtonSaveChange();
 
-
-
         log.info("Проверка тоста о сохранении изменений");
         sleep(1500);
-        assertThat(pageForFourTest.tostSaveChangeIsVisible())
-                .as("Тост об изменений о товаре отсуствует")
-                .isTrue();
+        assertForFourTest.checkTostSaveChangeIsVisible();
 
         sleep(1500);
-        assertThat(pageForFourTest.getTextTostSaveChange())
-                .as("Текст не соответствует ожидаемому - "+expTextTostSaveChanges)
-                .contains(expTextTostSaveChanges);
+        assertForFourTest.checkTextTostSaveChange();
 
         log.info("Возвращаемся на главную страницу");
         pageForFourTest.clickButtonBackToMainPage();
 
-
         log.info("Проверка что изменения есть на главной странице");
-        SelenideElement checker = $x("//*[text()=\""+ConfiguratorMain.config.productNameEdit()+"\"]");
-        checker.shouldBe(Condition.visible);
-        checker.shouldHave(Condition.text(ConfiguratorMain.config.productNameEdit()));
-
+        assertForFourTest.checkChange();
 
         log.info("Клик на Администрирование");
         authPage.clickAdminButton();
@@ -296,13 +233,12 @@ public class AssertForFourTest {
         log.info("Кликаем на удалить товар");
         pageForFourTest.clickButtonDeleteLastItem();
 
-
         log.info("Подтверждаем алерт");
         Alert cardDel = Selenide.switchTo().alert();
         cardDel.accept();
         log.info("Проверка что товара нет в списке");
 
-        $x("//*[@value=\""+ConfiguratorMain.config.productNameEdit()+"\"]").shouldNotBe(Condition.visible);
+        assertForFourTest.checkNotVisibleEditedItem();
         log.info("РЕЗУЛЬТАТ ТЕСТА --- УСПЕШНО");
     }
 }

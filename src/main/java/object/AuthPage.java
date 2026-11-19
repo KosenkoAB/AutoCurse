@@ -2,6 +2,7 @@ package object;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import lombok.Data;
 
 import static com.codeborne.selenide.Selenide.$x;
@@ -50,35 +51,42 @@ public class AuthPage {
     private final SelenideElement textWithInvalidAuth = $x("//*[@class=\"alert alert-danger\"]");
 
 
+    @Step("Клик на Администрирование")
     public void clickAdminButton(){
         adminButton.click();
     }
 
+    @Step("Клик на кнопку Sign In")
     public void clickButtonSignIn(){
         buttonSignIn.click();
     }
 
+    @Step("Ввод валидного логина")
     public void enterValidLogin(){
         login.sendKeys(ConfiguratorMain.config.adminLogin());
     }
 
+    @Step("Ввод валидного пароля")
     public void enterValidPassword(){
         password.sendKeys(ConfiguratorMain.config.adminPassword());
     }
 
+    @Step("Ввод НЕ валидного логина")
     public void enterInvalidLogin(){
         login.sendKeys(invalidLogin);
     }
 
+    @Step("Ввод НЕ валидного пароля")
     public void enterInvalidPassword(){
         password.sendKeys(invalidPassword);
     }
 
-
+    @Step("Проверка видимости текста при ввода НЕ валидного пароля")
     public void checkVisibLeTextWithInvalidAuth() {
         textWithInvalidAuth.shouldBe(Condition.visible);
     }
 
+    @Step("Проверка текста при ввода НЕ валидного пароля")
     public SelenideElement checkTextWithInvalidAuth(){
          return textWithInvalidAuth.shouldHave(Condition.text(expectedTextWithInvalidCreds));
     }
@@ -88,46 +96,53 @@ public class AuthPage {
         return textAdminPanel;
     }
 
-
+    @Step("Проверка видимости текста страницы Администрирование")
     public boolean checkTextAdminPanelIsVisible (){
         return textAdminPanel.isDisplayed();
     }
 
-
+    @Step("Проверка текста кнопки Администрирование")
     public void checkTextAdminButton(){
         adminButton.shouldHave(Condition.text(expectedTextAdminButton));
     }
 
+    @Step("Проверка видимости кнопки Администрирование")
     public void checkAdminButtonIsVisible (){
         adminButton.shouldBe(Condition.visible);
     }
 
 
 
+    @Step("Проверка текста внутри пустого поля логин")
     public void checkTextInsideFieldLogin(){
         login.shouldHave(Condition.attribute("placeholder", expectedTextLogin));
     }
 
+    @Step("Проверка видимости поля логин")
     public void checkLoginIsVisible () {
         login.shouldBe(Condition.visible);
     }
 
 
 
+    @Step("Проверка текста внутри пустого поля пароль")
     public void checkTextInsideFieldPassword(){
         password.shouldHave(Condition.attribute("placeholder", expectedTextPassword));
     }
 
+    @Step("Проверка видимости поля пароль")
     public void checkPasswordIsVisible () {
         password.shouldBe(Condition.visible);
     }
 
 
 
+    @Step("Проверка соответствия текста кнопки Sign In")
     public SelenideElement checkTextButtonSignIn(){
         return buttonSignIn.shouldHave(Condition.text(expectedTextButtonSignIn));
     }
 
+    @Step("Проверка видимости кнопки Sign In")
     public void checkButtonSignInIsVisible(){
         buttonSignIn.shouldBe(Condition.visible);
     }

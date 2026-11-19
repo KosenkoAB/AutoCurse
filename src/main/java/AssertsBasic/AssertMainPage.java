@@ -1,6 +1,7 @@
 package AssertsBasic;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import object.MainPage;
 
@@ -109,5 +110,11 @@ public class AssertMainPage {
     @Step("Проверка перехода на форму авторизации")
     public void checkGoInAuthorization(){
         $x("//button[@type=\"submit\"]").shouldBe(Condition.visible);
+    }
+
+    @Step("Проверка отображения товара в корзине")
+    public void checkItemInCart(){
+        SelenideElement list = $x("//*[@class=\"cart-item\"]");
+        list.shouldBe(Condition.visible);
     }
 }

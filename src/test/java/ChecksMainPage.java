@@ -106,8 +106,7 @@ public class ChecksMainPage {
         log.info("Проверка отображения товара в корзине");
         mainPage.clickButtonInCart();
 
-        SelenideElement list = $x("//*[@class=\"cart-item\"]");
-        list.shouldBe(Condition.visible);
+        assertMainPage.checkItemInCart();
         log.info("Товар присутствует результат - УСПЕШНО");
     }
 

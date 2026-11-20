@@ -37,14 +37,9 @@ dependencies {
     implementation("org.aeonbits.owner:owner:1.0.12")
     implementation("org.assertj:assertj-core:3.27.7")
 
-    implementation("io.qameta.allure:allure-selenide:3.1.1")
-    implementation("io.qameta.allure:allure-rest-assured:3.1.1")
     testImplementation("io.qameta.allure:allure-junit5:2.35.5")
-    implementation("io.qameta.allure:allure-java-commons:3.1.1")
-    runtimeOnly("io.qameta.allure:allure-test-filter:2.35.6")
-    testImplementation("io.qameta.allure:allure-selenide:3.1.1")
-    testImplementation("io.qameta.allure:allure-rest-assured:3.1.1")
-    implementation("io.qameta.allure:allure-junit5:2.35.5")
+    testImplementation("io.qameta.allure:allure-selenide:2.35.5")
+    testImplementation("io.qameta.allure:allure-rest-assured:2.35.5")
 
     implementation(platform("org.junit:junit-bom:6.0.0"))
     implementation("org.junit.jupiter:junit-jupiter")
@@ -99,4 +94,5 @@ tasks.register<Test>("Page") {
     testTaskConfigurator()
     useJUnitPlatform { includeTags("Page") }
     outputs.upToDateWhen { false }
+    systemProperty("allure.results.directory", "build/allure-results")
 }

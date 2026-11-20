@@ -1,4 +1,6 @@
 
+import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
@@ -15,15 +17,17 @@ import static org.hamcrest.Matchers.*;
 
 public class ApiWork {
 
+    @Step("Получание списка товаров")
     @Test
     @Tag("api")
     void rest() {
         given()
-                .baseUri("http://localhost:8080")
+                .filter(new AllureRestAssured())
+                .baseUri(Configurator.CONFIG.baseUrl())
                 .queryParam("page", 0)
                 .queryParam("size", 10)
                 .auth()
-                .basic("admin", "secret123")
+                .basic(Configurator.CONFIG.adminLogin(), Configurator.CONFIG.adminPassword())
                 .get("/goods/list")
                 .then()
                 .log().all()
@@ -32,16 +36,18 @@ public class ApiWork {
     }
 
     private RequestSpecification asd = new RequestSpecBuilder()
-            .setBaseUri("http://localhost:8080")
-            .setAuth(basic("admin", "secret123"))
+            .setBaseUri(Configurator.CONFIG.baseUrl())
+            .setAuth(basic(Configurator.CONFIG.adminLogin(), Configurator.CONFIG.adminPassword()))
             .setContentType(ContentType.JSON)
             .log(LogDetail.ALL)
             .build();
 
+    @Step("Получание списка товаров с реквест спекой")
     @Test
     @Tag("api")
     void spec() {
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -62,10 +68,12 @@ public class ApiWork {
 
     Item2 newItem = new Item2(name, price);
 
+    @Step("Добавление товара")
     @Test
     @Tag("api")
     void add() {
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .body(newItem)
@@ -75,6 +83,7 @@ public class ApiWork {
                 .statusCode(200);
 
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -98,16 +107,19 @@ public class ApiWork {
 
     Item2 newItem2 = new Item2(name2, price2);
 
+    @Step("Проверка добавления товара и удаление")
     @Test
     @Tag("api")
     void addAssert() {
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .body(newItem2)
                 .post("/goods/add");
 
         Response response = given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -125,6 +137,7 @@ public class ApiWork {
         int beerId = response.jsonPath().getInt("goods.find { it.name == '" + name2 + "' }.id");
 
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .pathParam("id", beerId)
                 .when()
@@ -138,16 +151,18 @@ public class ApiWork {
 
 
     private RequestSpecification spec = new RequestSpecBuilder()
-            .setBaseUri("http://localhost:8080")
+            .setBaseUri(Configurator.CONFIG.baseUrl())
 //            .setAuth(basic("admin","secret123"))
             .setContentType(ContentType.JSON)
             .log(LogDetail.ALL)
             .build();
 
+    @Step("Проверка добавления товара с Не валидными кредами")
     @Test
     @Tag("api")
     void postAdd400() {
         Response response = given()
+                .filter(new AllureRestAssured())
                 .spec(spec)
                 .contentType(ContentType.JSON)
                 .body(newItem2)
@@ -160,16 +175,19 @@ public class ApiWork {
 
     }
 
+    @Step("Проверка добавления товара и удаление проверка ассертом getGoodsId200")
     @Test
     @Tag("api")
     void getGoodsId200() {
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .body(newItem2)
                 .post("/goods/add");
 
         Response response = given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -179,6 +197,7 @@ public class ApiWork {
         int uid = response.jsonPath().getInt("goods.find { it.name == '" + name2 + "' }.id");
 
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .queryParam("id", uid)
@@ -189,6 +208,7 @@ public class ApiWork {
                 .isEqualTo(200);
 
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .pathParam("id", uid)
                 .when()
@@ -199,10 +219,12 @@ public class ApiWork {
 
     }
 
+    @Step("Проверка получения списка товаров getGoodsId404")
     @Test
     @Tag("api")
     void getGoodsId404() {
         Response response = given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .queryParam("id", 1000)
@@ -213,17 +235,19 @@ public class ApiWork {
                 .isEqualTo(404);
     }
 
-
+    @Step("Проверка удаления товара delete200")
     @Test
     @Tag("api")
     void delete200() {
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .body(newItem2)
                 .post("/goods/add");
 
         Response response = given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -233,6 +257,7 @@ public class ApiWork {
         int beerId = response.jsonPath().getInt("goods.find { it.name == '" + name2 + "' }.id");
 
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .pathParam("id", beerId)
                 .when()
@@ -246,10 +271,12 @@ public class ApiWork {
                 .isEqualTo(200);
     }
 
+    @Step("Проверка удаления товара delete404")
     @Test
     @Tag("api")
     void deleteId404() {
         Response response = given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .queryParam("id", 1000)
@@ -271,16 +298,19 @@ public class ApiWork {
 
     Item3 newItem3 = new Item3(name3, price3);
 
+    @Step("Проверка частичного обновления товара patch200")
     @Test
     @Tag("api")
     void patch200() {
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .body(newItem2)
                 .post("/goods/add");
 
         Response response = given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -290,6 +320,7 @@ public class ApiWork {
         int beerId = response.jsonPath().getInt("goods.find { it.name == '" + name2 + "' }.id");
 
         Response response2 =  given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .pathParam("id", beerId)
                 .body(newItem3)
@@ -309,6 +340,7 @@ public class ApiWork {
                 .isEqualTo(price3);
 
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .pathParam("id", beerId)
                 .when()
@@ -320,17 +352,19 @@ public class ApiWork {
     }
 
 
-
+    @Step("Проверка частичного обновления товара с Не валидными кредами patch400")
     @Test
     @Tag("api")
     void patch400() {
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .contentType(ContentType.JSON)
                 .body(newItem2)
                 .post("/goods/add");
 
         Response response = given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -340,6 +374,7 @@ public class ApiWork {
         int beerId = response.jsonPath().getInt("goods.find { it.name == '" + name2 + "' }.id");
 
         Response response2 =  given()
+                .filter(new AllureRestAssured())
                 .spec(spec)
                 .pathParam("id", beerId)
                 .body(newItem3)
@@ -351,6 +386,7 @@ public class ApiWork {
                 .isEqualTo(401);
 
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .pathParam("id", beerId)
                 .when()
@@ -361,11 +397,13 @@ public class ApiWork {
 
     }
 
+    @Step("Проверка частичного обновления товара patch404")
     @Test
     @Tag("api")
     void patch404() {
 
         Response response2 =  given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .pathParam("id", 123)
                 .body(newItem3)
@@ -378,10 +416,11 @@ public class ApiWork {
 
     }
 
-
+    @Step("Проверка удаления не существующего товара")
     @Test
     void del(){
         given()
+                .filter(new AllureRestAssured())
                 .spec(asd)
                 .pathParam("id", 50)
                 .when()
